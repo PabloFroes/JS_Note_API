@@ -43,7 +43,14 @@ router.put('/:id', withAuth, async (req,res) => {
 })
 
 router.delete('/:id', withAuth, async (req,res) => {
-    //TODO
+    try {
+        const {id} = req.params
+        const note = await Note.findById(id)
+        await Note.findByIdAndDelete(id)
+        res.status(200).json({'Deleted': {'Note title': note.title}})
+    } catch (error) {
+        res.status(500).json({error: error})
+    }
 })
 
 
