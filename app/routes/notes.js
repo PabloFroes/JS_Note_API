@@ -39,16 +39,36 @@ router.get('/', withAuth, async (req, res) => {
 })
 
 router.put('/:id', withAuth, async (req,res) => {
-    //TODO
+    const {id} = req.params
+    const {title, body} = req.body
+    try {
+        let note =  await Note.findById(id)
+        if(isOwner(req.user, note)){
+            let note = await Note.findOneAndUpdate(id,
+                { $set: {title: title, body: body}},
+                { upsert: true, 'new': true} 
+                )
+                res.status(200).json(note)
+        }else{
+            res.status(403).json({error: 'Permission denied'})
+        }
+    } catch (error) {
+        res.status(500).json({error: 'Problem to update a note'})
+    }
 })
 
 router.delete('/:id', withAuth, async (req,res) => {
+    const {id} = req.params
     try {
-        const {id} = req.params
         const note = await Note.findById(id)
-        await Note.findByIdAndDelete(id)
-        res.status(200).json({'Deleted': {'Note title': note.title}})
+        if(isOwner(req.user, note)){
+            await note.delete()
+            res.status(200).json({'Deleted': {'Note title': note.title}})
+        }else{
+            res.status(403).json({error: 'Permission denied'})
+        }
     } catch (error) {
+        console.log(error)
         res.status(500).json({error: error})
     }
 })
