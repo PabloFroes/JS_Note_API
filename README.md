@@ -15,3 +15,15 @@ Link to access: https://js-react-notes-client.herokuapp.com/
 <img src="https://i.ibb.co/jh90rTM/js-note-editor.jpg" alt="js-note-editor" border="0" />
 
 
+## To Run (Required Mongo_DB intalled)
+
+In the project directory, you can run:
+
+### `npm install`
+### `port=3001 npx nodemon`
+
+Runs the app in the development mode.\
+Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
+
+## You will need JS Note app running to use this api
+### [JS_Note](https://github.com/PabloFroes/JS_Note)
